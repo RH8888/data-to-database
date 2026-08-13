@@ -26,7 +26,15 @@ HEADER_RE = re.compile(
     r".*?⬅️\s*(?P<course_name>.+?)\s*(?:\n|$)",
     re.S,
 )
+PLAIN_HEADER_RE = re.compile(
+    r"^\s*کلاس[‌ ]های\s+(?P<subject>[^\n]+?)\s*\n+"
+    r"\s*(?:[🟡🔵🔴🟢🟣🟠⚪️⚫️⭐️🔸🔹▪️▫️✅☑️✔️]+\s*)?(?P<teacher>[^\n]+?)\s*\n+"
+    r"\s*(?P<course_name>[^\n]+?)\s*(?:\n|$)",
+    re.S,
+)
 URL_RE = re.compile(r"https?://[^\s)\]}،,؛]+")
+UPDATE_ANNOUNCEMENT_RE = re.compile(r"کلاس[‌ ]هایی\s+که\s+امروز\s+اپدیت\s+شدند")
+PLACEHOLDER_RE = re.compile(r"^[\s.،。]*$")
 SESSION_RE = re.compile(r"(?:جلسه|جلسه‌ی|جلسهٔ|جلسه\s*ی)\s*(?P<number>[۰-۹0-9]+)?\s*[:：\-.،]?\s*(?P<title>[^\n]*)")
 YEAR_RE = re.compile(r"(?<!\d)(?P<year>[۰-۹0-9]{3,4})(?!\d)")
 
@@ -51,7 +59,7 @@ def normalize(value: str) -> str:
 
 
 def parse_header(text: str) -> dict[str, Any] | None:
-    match = HEADER_RE.search(text)
+    match = HEADER_RE.search(text) or PLAIN_HEADER_RE.search(text)
     if not match:
         return None
     course_name = normalize(match.group("course_name"))
@@ -83,6 +91,8 @@ def urls_from_message(message: dict[str, Any], text: str) -> list[dict[str, str 
 
 
 def sessions_from_text(text: str) -> list[dict[str, str | None]]:
+    if UPDATE_ANNOUNCEMENT_RE.search(text):
+        return []
     sessions: list[dict[str, str | None]] = []
     for match in SESSION_RE.finditer(text):
         title = normalize(match.group("title")) or None
@@ -106,6 +116,8 @@ class Course:
     video_urls: list[dict[str, str | int | None]] = field(default_factory=list)
 
     def attach(self, message: dict[str, Any], text: str) -> None:
+        if PLACEHOLDER_RE.fullmatch(text):
+            return
         message_id = message.get("id")
         self.content_message_ids.append(message_id)
         for session in sessions_from_text(text):
