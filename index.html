@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>کاتالوگ دوره‌ها</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="eyebrow">کاتالوگ آموزشی استخراج‌شده</p>
+      <h1>مرور دوره‌ها، مدرس‌ها و لینک‌های ویدئو</h1>
+      <p class="subtitle">جستجو در داده‌های موجود در <code>courses.json</code> بدون بک‌اند، دیتابیس یا تغییر در استخراج‌کننده.</p>
+      <label class="search" for="searchInput">
+        <span>جستجوی سریع</span>
+        <input id="searchInput" type="search" placeholder="نام مدرس، درس، دوره یا عنوان جلسه… مثل فرهمندنیا یا زیست" autocomplete="off" />
+      </label>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="filters" aria-label="فیلترها">
+      <div class="panel-title">
+        <h2>فیلترها</h2>
+        <button id="clearFilters" type="button">پاک کردن</button>
+      </div>
+      <label>مدرس<select id="teacherFilter"><option value="">همه مدرس‌ها</option></select></label>
+      <label>درس<select id="subjectFilter"><option value="">همه درس‌ها</option></select></label>
+      <label>دوره / برنامه<select id="courseFilter"><option value="">همه دوره‌ها</option></select></label>
+      <label>سال<select id="yearFilter"><option value="">همه سال‌ها</option></select></label>
+      <label>ارائه‌دهنده<select id="providerFilter"><option value="">همه ارائه‌دهنده‌ها</option></select></label>
+      <section class="stats" id="stats"></section>
+    </aside>
+
+    <section class="content">
+      <div class="results-header">
+        <div><h2>نتایج دوره‌ها</h2><p id="resultSummary">در حال بارگذاری…</p></div>
+        <button id="backButton" class="hidden" type="button">بازگشت به نتایج</button>
+      </div>
+      <div id="teacherSubjectInsight" class="insight"></div>
+      <div id="results" class="cards"></div>
+      <article id="courseView" class="course-view hidden"></article>
+    </section>
+  </main>
+
+  <template id="courseCardTemplate">
+    <article class="card">
+      <div class="card__top"><span class="badge subject"></span><span class="badge year"></span></div>
+      <h3></h3>
+      <p class="teacher"></p>
+      <p class="meta"></p>
+      <p class="counts"></p>
+      <button type="button">مشاهده دوره</button>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
