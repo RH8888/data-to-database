@@ -29,9 +29,7 @@ function adaptCourse(course, index) {
 
 async function init() {
   try {
-    const response = await fetch('courses.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.raw = await response.json();
+    state.raw = await loadCourseData();
     const courses = Array.isArray(state.raw) ? state.raw : state.raw.courses;
     if (!Array.isArray(courses)) throw new Error('courses.json does not contain a courses array.');
     state.courses = courses.map(adaptCourse);
@@ -39,8 +37,23 @@ async function init() {
     bindEvents();
     applyFilters();
   } catch (error) {
-    els.summary.textContent = 'خطا در بارگذاری courses.json';
-    els.results.innerHTML = `<div class="empty">${error.message}</div>`;
+    els.summary.textContent = 'خطا در بارگذاری اطلاعات دوره‌ها';
+    els.results.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
+  }
+}
+
+async function loadCourseData() {
+  if (window.COURSES_DATA) return window.COURSES_DATA;
+
+  try {
+    const response = await fetch('courses.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  } catch (error) {
+    if (window.location.protocol === 'file:') {
+      throw new Error('مرورگر اجازه خواندن courses.json با آدرس file:// را نمی‌دهد. فایل index.html را از طریق یک سرور محلی باز کنید یا courses-data.js را کنار آن نگه دارید.');
+    }
+    throw error;
   }
 }
 
