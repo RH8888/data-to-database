@@ -4,7 +4,7 @@ window.COURSES_DATA = {
     "id": 3969252174,
     "message_count": 8103
   },
-  "course_count": 484,
+  "course_count": 482,
   "unassigned": {
     "message_ids": [
       1,
@@ -110340,18 +110340,6 @@ window.COURSES_DATA = {
       ]
     },
     {
-      "header_message_id": 7650,
-      "subject": "ریاضی",
-      "teacher": "عزیزی",
-      "course_name": "سالیانه جامع",
-      "program_year": null,
-      "content_message_ids": [
-        7668
-      ],
-      "sessions": [],
-      "video_urls": []
-    },
-    {
       "header_message_id": 7670,
       "subject": "شیمی",
       "teacher": "مصلایی",
@@ -111246,16 +111234,6 @@ window.COURSES_DATA = {
           "provider": "stream.alphaschool.ir"
         }
       ]
-    },
-    {
-      "header_message_id": 7858,
-      "subject": "هندسه",
-      "teacher": "احمدوند",
-      "course_name": "سالیانه یازدهم",
-      "program_year": null,
-      "content_message_ids": [],
-      "sessions": [],
-      "video_urls": []
     },
     {
       "header_message_id": 7875,
@@ -112391,5 +112369,4 @@ window.COURSES_DATA = {
       ]
     }
   ]
-}
-;
+};
